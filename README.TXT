@@ -33,4 +33,4 @@ Please see the documentation for information on how to use this code.
 Contributions to DEcalioc code are welcome.
 Please contact the main developer if you would like to add value to this project.
 
-Bug reporting: Please provide a minimal example which enables reproduction the bug.
+Bug reporting: Please provide a minimal example which enables reproduction of the bug.
