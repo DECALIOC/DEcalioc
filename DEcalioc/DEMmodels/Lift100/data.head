@@ -1,0 +1,74 @@
+# This file is part of DEcalioc.
+# 
+# Main contributor(s) of this file:
+# Michael Rackl
+# 
+# Copyright 2016           Institute for
+#                          Materials Handling, Material Flow, Logistics
+#                          Technical University of Munich, Germany
+# 
+# DEcalioc is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+# 
+# DEcalioc is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with DEcalioc. If not, see <http://www.gnu.org/licenses/>.
+# ----------------------------------------------------------------------
+
+#####################################################################################
+# USER: general settings
+#####################################################################################
+variable percentRayleigh equal 0.45		# percentage of the Rayleigh timestep
+variable DumpInterv equal 1/12			# timestep (seconds) to generate a dump-file
+
+#####################################################################################
+# material properties
+#####################################################################################
+variable densityP equal 800			# density of the particles
+variable youngsModulusP equal 5e6 		# Young's modulus of the particles
+variable poissonsRatioP equal 0.3		# Poisson's ratio of the particles
+
+#####################################################################################
+# wall material
+#####################################################################################
+variable youngsModulusW equal 2.10e11 		# Young's modulus of the wall
+variable poissonsRatioW equal 0.3 		# Poisson's ratio of the wall
+
+#####################################################################################
+# interaction between materials
+#####################################################################################
+# coefficient of restitution
+variable coefRestitutionPP equal 0.6	  	# particle-particle
+variable coefRestitutionPW equal 0.6	  	# particle-wall
+variable coefRestitutionWW equal 0.1  		# wall-wall
+
+# coefficient of friction
+variable coefFrictionPP equal 0.5  		# particle-particle
+variable coefFrictionPW equal 0.5  		# particle-wall
+variable coefFrictionWW equal 0.2  		# wall-wall
+
+# coefficient rolling friction
+variable coefRollingFrictionPP equal 0.05  	# particle-particle
+variable coefRollingFrictionPW equal 0.05  	# particle-wall
+variable coefRollingFrictionWW equal 0  	# wall-wall
+
+#####################################################################################
+# material test setup
+#####################################################################################
+variable FillMass equal (1.5*0.55*${densityP}*0.25*PI*0.1^2*0.05)	# filling mass
+
+#####################################################################################
+# compute further parameter values from given input
+#####################################################################################
+variable FactMassrate equal (${FillMass}/2)		# massflow to fill the cylinder
+variable RLTS equal 0					# rayleigh-timestep, will be set later
+variable SIMTS equal 0					# simulation rayleigh-timestep, will be set later
+
+#####################################################################################
+# parameters from DEcaLiOc will be added below this note
+#####################################################################################

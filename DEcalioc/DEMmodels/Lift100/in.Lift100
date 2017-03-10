@@ -1,0 +1,138 @@
+# This file is part of DEcalioc.
+# 
+# Main contributor(s) of this file:
+# Michael Rackl
+# 
+# Copyright 2016           Institute for
+#                          Materials Handling, Material Flow, Logistics
+#                          Technical University of Munich, Germany
+# 
+# DEcalioc is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+# 
+# DEcalioc is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with DEcalioc. If not, see <http://www.gnu.org/licenses/>.
+# ----------------------------------------------------------------------
+
+#####################################################################################
+# import parameters from data.head
+#####################################################################################
+include data.head
+hard_particles yes
+# recompute FillMass and FactMassrate, in case the particle density was changed in data.head
+variable FillMass equal (1.5*0.55*${densityP}*0.25*PI*0.1^2*0.05)
+variable FactMassrate equal (${FillMass}/2)
+
+modify_timing on
+#####################################################################################
+# compute the Rayleigh timestep if it has not been set, yet.
+#####################################################################################
+if 	"${SIMTS} == 0" then "variable SIMTS equal ${percentRayleigh}*(PI*0.002*sqrt(${densityP}/(${youngsModulusP}/(2*(1+${poissonsRatioP}))))/((0.1631*${poissonsRatioP})+0.8766))"
+
+#####################################################################################
+# convert simulation durations into timesteps
+#####################################################################################
+variable FillTimesteps equal round(2/${SIMTS})
+variable dump_time equal round(${DumpInterv}/${SIMTS})
+variable settle1 equal round(3/${SIMTS})
+variable settle2 equal round(10/${SIMTS})
+
+#####################################################################################
+# this model fills a cylindrical container with spheres, measures the bulk density
+# and then releases the bulk material through an orifice. The second measurement
+# value is the remaining mass inside the container
+#####################################################################################
+# initialization
+#####################################################################################
+atom_style	granular
+atom_modify	map array
+boundary	f f f
+newton		off
+communicate	single vel yes
+units		si
+region		regSimDomain block -0.05 0.05 -0.05 0.05 0 0.11 units box
+create_box	2 regSimDomain
+
+#####################################################################################
+neighbor	0.004 bin
+neigh_modify	delay 0
+#####################################################################################
+# assign material properties to bulk solid and walls
+#####################################################################################
+fix 		m1 all property/global youngsModulus peratomtype ${youngsModulusP} ${youngsModulusW}
+fix 		m2 all property/global poissonsRatio peratomtype ${poissonsRatioP} ${poissonsRatioW}
+fix 		m3 all property/global coefficientRestitution peratomtypepair 2 &
+			${coefRestitutionPP} ${coefRestitutionPW} &
+			${coefRestitutionPW} ${coefRestitutionWW}
+fix 		m4 all property/global coefficientFriction peratomtypepair 2 &
+			${coefFrictionPP} ${coefFrictionPW} &
+			${coefFrictionPW} ${coefFrictionWW}
+fix 		m5 all property/global coefficientRollingFriction peratomtypepair 2 &
+			${coefRollingFrictionPP} ${coefRollingFrictionPW} &
+			${coefRollingFrictionPW} ${coefRollingFrictionWW}
+
+
+
+pair_style 	gran model hertz tangential history rolling_friction epsd2
+pair_coeff	* *
+fix		gravi all gravity 9.81 vector 0.0 0.0 -1.0
+timestep	${SIMTS}
+
+
+region		regDelete block -0.05 0.05 -0.05 0.05 0.05 0.1 units box
+group		grpNVE region regSimDomain
+
+
+fix 		ground all wall/gran model hertz tangential history primitive type 2  zplane 0
+fix		mshCylinder grpNVE mesh/surface file meshes/Container.stl type 2 scale 0.001 move 0. 0. 0
+fix 		granwalls grpNVE wall/gran model hertz tangential history mesh n_meshes 1 meshes mshCylinder
+
+fix	pts1 grpNVE particletemplate/sphere 15485863 atom_type 1 density constant ${densityP} radius constant 0.002
+fix	pts2 grpNVE particletemplate/sphere 15485867 atom_type 1 density constant ${densityP} radius constant 0.003
+fix	pdd1 grpNVE particledistribution/discrete/massbased 32452867 2 pts1 0.8 pts2 0.2
+
+region	regFactory cylinder z 0 0 0.05 0.065 0.1
+
+variable 	every equal round(0.2/${SIMTS})
+fix		ins grpNVE insert/rate/region seed 49979687 distributiontemplate pdd1 insert_every ${every} &
+		vel constant 0 0 0 mass ${FillMass} massrate ${FactMassrate} overlapcheck yes all_in yes region regFactory
+# apply NVE integration
+fix		integr grpNVE nve/sphere
+
+thermo_style	custom time atoms ke spcpu cpu cpuremain
+variable	ThermoOut equal round(0.05/${SIMTS})
+thermo		${ThermoOut}
+
+
+#shell mkdir post
+#dump	dmp1 all custom ${dump_time} post/dump*.paraview id type type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
+run	1
+
+
+run	${FillTimesteps} upto
+unfix	ins
+# let the particles settle
+run	${settle1}
+
+group	grp_del region regDelete
+delete_atoms group grp_del
+variable	TotalVol equal (0.05*0.25*PI*0.1^2)	# filled volume inside the cylinder
+region		regBulkDen cylinder z 0 0 0.05 0 0.05
+group		grpBulkDen region regBulkDen
+
+variable 	TotalDensity equal (mass(grpBulkDen)/${TotalVol}) 	# bulk density
+print 		"${TotalDensity}" file output_density			# write bulk density to file
+
+
+unfix	ground
+run	${settle2}
+#dump	dmp2 all custom ${dump_time} post/dump*.paraview id type type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
+
+variable 	RemainMass equal mass(grpBulkDen)
+print 		"${RemainMass}" file output_mass
