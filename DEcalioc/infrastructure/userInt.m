@@ -66,7 +66,7 @@ function [stop, info] = userInt(p, vals, state, DEMflag)
       disp('###             Optimization - init (DEM-model)        ###');
       disp('##########################################################');
     endif
-    disp('Iteration nr.: 0');
+    disp('Iteration no.: 0');
     disp('  Residuals');
     for i = 1:rows(vals.residual)
       disp(['     ', num2str(vals.residual(i,:))]);
@@ -74,7 +74,7 @@ function [stop, info] = userInt(p, vals, state, DEMflag)
 
   elseif (strcmp(state, 'iter'))
     % iter state
-    disp(['Iteration nr.: ', num2str(vals.iteration)]);
+    disp(['Iteration no.: ', num2str(vals.iteration)]);
     disp('  Residuals:');
     for i = 1:rows(vals.residual)
       disp(['     ', num2str(vals.residual(i,:))]);
