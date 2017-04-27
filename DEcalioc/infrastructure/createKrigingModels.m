@@ -37,8 +37,8 @@ function [KrigingFunNames,varargout] = createKrigingModels(ExPlanFiles,RespFiles
   %                       Factor1     Factor2     FactorN
   %                [     lowerLim    lowerLim    lowerLim    ]
   %                [     upperLim    upperLim    upperLim    ]
-  %   - optional (4): specify the model's trend; 1--> linear, 2--> quadratic
-  %                   default setting is 1
+  %   - optional (4): (string variable) specify the model's trend function --> see the stk toolbox documentation
+  %                   default setting is stk_lm_affine
   %   - optional (5): specify the covariance function to use (string);
   %                   default setting is 'stk_materncov_aniso'; 
   %                   see stk toolbox documentation for help on this argument
@@ -98,11 +98,11 @@ function [KrigingFunNames,varargout] = createKrigingModels(ExPlanFiles,RespFiles
   %###########################################################################
   if nargin() > 3
     % if at least the model order is specified
-    model.order = varargin{1};
-    disp(['with trend=' num2str(varargin{1})])
+    model.lm = eval(varargin{1});
+    disp(['with trend function = ' varargin{1}])
   else
     % no extra arguments
-    model.order = 1;  % linear trend as default
+    model.lm = stk_lm_affine;  % linear trend as default
     disp('with linear trend.')
     disp(' ')
   end
