@@ -35,7 +35,10 @@ function ExPlan = GenerateExperPlan(factorLimits,N, pathExPlan)
   DIM = columns(factorLimits);
   % generate 5,000 LHS designs per factor to have more designs to choose from
   NITER = 5000*DIM;
-  ExPlan = stk_sampling_maximinlhs(N,DIM,factorLimits,NITER).a;
+  ExPlan = stk_sampling_maximinlhs(N,DIM,factorLimits,NITER);
+  % fix compatibility with stk 2.5.0
+  ExPlan = struct2cell(ExPlan);
+  ExPlan = ExPlan{1,1};
   
   % write experimental plan to csv file
   %csvwrite([pathExPlan,"/ExperimentalPlan.csv"],ExPlan);
