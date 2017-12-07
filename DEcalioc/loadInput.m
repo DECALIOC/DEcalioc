@@ -94,11 +94,6 @@ function [Input, optim, modelVars, assign, paramLims] = loadInput()
   optim.WRL           =   0.5;
   
   
-  % User-specific input
-  %  - Input.maxCPU           : maximum count of CPUs used during the whole run
-  Input.maxCPU        =   30;
-  
-  
   %*****************************************************************************
   %//	input - MODEL VARIABLES and DESIGN VARIABLES
   %*****************************************************************************
