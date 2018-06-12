@@ -12,7 +12,7 @@ DEcalioc is open-source software and distributed under the terms
 of the GNU General Public License 3 (GPLv3).
 
 Main developer:
-Michael Rackl (rackl<at>fml.mw.tum.de)
+Michael Rackl (michael.rackl<at>tum.de)
 
 Contributions by:
 Michael Rackl
