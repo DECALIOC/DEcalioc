@@ -1,4 +1,5 @@
 function out = ModelReplacement(dummy)
+  pkg load stk
   x = csvread('params.csv');
   load 'models.mod'
   m = stk_predict(model_mass, params, mass, x).mean;
