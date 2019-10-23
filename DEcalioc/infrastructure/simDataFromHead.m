@@ -15,8 +15,8 @@ function simData = simDataFromHead(model, folderName)
   
   % open data.head
   fd = fopen([path, 'optim/', model, '/', folderName, '/data.head'], 'r');
-  
 %  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\template\data.head','r');
+%  fd = fopen('M:\fwdf\members\church70\GitHub\DEcalioc\DEcalioc\DEMmodels\Lift100\data.head','r');
   
   str = fgets(fd);   
   % Walltime
