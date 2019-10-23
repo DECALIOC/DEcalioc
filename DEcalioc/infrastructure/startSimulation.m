@@ -35,7 +35,8 @@ function startSimulation(model,folderName)
   % change directory and start simulation
   % info: unix(...) waits until the simulation has finished
   chdir([path, 'optim/', model, '/', folderName, '/']);    
-  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/runscript']);
+%  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/runscript']);
+  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/job.sh']);
   chdir(path);
   
 endfunction
