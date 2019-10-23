@@ -27,8 +27,8 @@ function writeJob(model, folderName)
   mpiProc    = simData{5,1};
   
   % open job.sh
-  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
-%  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','r');
+%  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
+  fd = fopen('/data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100/job.sh','r');
 %  fd = fopen('M:\fwdf\members\church70\GitHub\DEcalioc\DEcalioc\DEMmodels\Lift100\job.sh','r');
 
   % Read job.sh into cell A
@@ -64,8 +64,8 @@ function writeJob(model, folderName)
   A{8} = strrep(A{8},'path',[path, 'optim/', model, '/', folderName]);
   
   % Write cell A into job.sh 
-  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'w'); 
-%  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','w');
+%  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'w'); 
+  fd = fopen('/data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100/job.sh','w');
 %  fd = fopen('M:\fwdf\members\church70\GitHub\DEcalioc\DEcalioc\DEMmodels\Lift100\job.sh','w');
 
   for i = 1:numel(A)
