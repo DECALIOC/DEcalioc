@@ -13,9 +13,9 @@ function writeJob(model, folderName)
   
   global path;
   
-%  path = 'path';
-%  model = 'model';
-%  folderName='test';
+  path = 'path';
+  model = 'model';
+  folderName='test';
 
   %% Read proc, walltime info from data.head
   simData = simDataFromHead(model, folderName);
@@ -28,9 +28,9 @@ function writeJob(model, folderName)
   
   % open job.sh
   fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
-  
 %  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','r');
-  
+%  fd = fopen('M:\fwdf\members\church70\GitHub\DEcalioc\DEcalioc\DEMmodels\Lift100\job.sh','r');
+
   % Read job.sh into cell A
   i = 1;
   tline = fgetl(fd);
@@ -66,6 +66,7 @@ function writeJob(model, folderName)
   % Write cell A into job.sh 
   fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'w'); 
 %  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','w');
+%  fd = fopen('M:\fwdf\members\church70\GitHub\DEcalioc\DEcalioc\DEMmodels\Lift100\job.sh','w');
 
   for i = 1:numel(A)
       if A{i+1} == -1
