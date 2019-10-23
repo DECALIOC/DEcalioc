@@ -1,1 +1,2 @@
-liggghts < in.Lift100
+#!/bin/bash
+~/MYLIGGGHTS/src/lmp_auto < in.Lift100
