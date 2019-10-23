@@ -26,6 +26,16 @@ function writeJob(model, folderName)
   nodes      = simData{4,1};
   mpiProc    = simData{5,1};
   
+  
+  
+  
+  % Change file permissions, Linux compatability of job.sh
+  system(['cd ', path, 'optim/', model, '/', folderName, ';',...
+    ' chmod 755 job.sh; sed -i ''s/\r//g'' job.sh']);
+
+  system(['cd /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100;',...
+    ' chmod 755 job.sh; sed -i ''s/\r//g'' job.sh']);
+    
   % open job.sh
 %  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
   fd = fopen('/data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100/job.sh','r');
