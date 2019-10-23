@@ -7,4 +7,4 @@
 
 cd path
 
-mpirun -np 0 lmp_auto < in.rotatingdrum
+mpirun -np 0 lmp_auto < in.Lift100
