@@ -1,4 +1,4 @@
-%function [] = writeJob() 
+function writeJob(model, folderName) 
   
   % writeJob.m
   %
@@ -12,12 +12,13 @@
   
   
   global path;
-  model =1;
-  newFolderName=2;
-  %% Read proc, walltime info from data.head
-  simData = simDataFromHead(model, newFolderName);
   
-  simData = {walltime; processors; queue; nodes; mpiProc};
+%  path = 'path';
+%  model = 'model';
+%  folderName='test';
+
+  %% Read proc, walltime info from data.head
+  simData = simDataFromHead(model, folderName);
   
   walltime   = simData{1,1};
   processors = simData{2,1};
@@ -26,9 +27,9 @@
   mpiProc    = simData{5,1};
   
   % open job.sh
-%  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
+  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
   
-  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','r');
+%  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','r');
   
   % Read job.sh into cell A
   i = 1;
@@ -57,81 +58,25 @@
   A{4} = strrep(A{4},'nodes=1',['nodes=',num2str(nodes)]);
   
   % Change job name (line 5)
+  A{5} = strrep(A{5},'DEM',folderName);
   
   % Change path (line 8)
+  A{8} = strrep(A{8},'path',[path, 'optim/', model, '/', folderName]);
   
-
-
-%  % Set qsub submission name to project name
-%  string5 = cellstr(['sed -i ''s/DEM/' projectname '/'' job.script']);
-%
-%
-%  % Set path to simulation directory
-%  string8 = cellstr(['sed -i ''s/cd path/cd ' replace(path_hypnos_sim,...
-%      '/','\/') projectname '\//'' job.script']);
-
   % Write cell A into job.sh 
-  %  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'w');
-  
-  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','w');
-  fid = fopen('test2.txt', 'w');
+  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'w'); 
+%  fd = fopen('M:\fwdf\members\church70\MATLAB_Integration\start\job.sh','w');
+
   for i = 1:numel(A)
       if A{i+1} == -1
-          fprintf(fid,'%s', A{i});
+          fprintf(fd,'%s', A{i});
           break
       else
-          fprintf(fid,'%s\n', A{i});
+          fprintf(fd,'%s\n', A{i});
       end
   end
   
-  fclose(fd)
+  % Close job.sh
+  fclose(fd);
   
-
-
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  % close job.sh 
-%  fclose(fd);
-  
-%%  % open data.head
-%%  fd = fopen([path, 'optim/', model, '/', folderName, '/data.head'], "a");
-%  
-%  % append modelVars to data.head 
-%  fdisp(fd, '');
-%  
-%  fields = fieldnames(modelVars);
-%  for i = 1:length(fields)
-%    newline = ['variable ', fields{i}, ' equal ', num2str(modelVars.(fields{i}))];
-%    fdisp(fd, newline);
-%  endfor
-%  
-%  % close data.head
-%  fclose(fd);
-  
-%endfunction
+endfunction
