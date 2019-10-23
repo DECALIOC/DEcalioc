@@ -57,9 +57,9 @@ function results = runScript(matr, model)
   
   % write parameters into csv-file
   writeParams(model, matr, newFolderName);
-  
+    
   % write simulation settings into job.sh 
-  writeJob(model, , newFolderName);
+  writeJob(model, newFolderName);
   
   %*****************************************************************************
   %//	START SIMULATION
