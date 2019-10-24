@@ -35,18 +35,13 @@ function startSimulation(model,folderName)
   % change directory and start simulation
   % info: unix(...) waits until the simulation has finished
   chdir([path, 'optim/', model, '/', folderName, '/']);    
-%  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/runscript']);
   status = unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
     ' /opt/torque/bin/qsub job.sh']);  
-%  status = unix(['cd /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100', ';',...
-%    ' /opt/torque/bin/qsub job.sh']);
-
 
   % Query output.txt file existence
-%  status = unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
-%    ' test -e ', folderName,'_output.txt && echo 1 || echo 0']);
   command = ['cd ', path, 'optim/', model, '/', folderName, ';',...
     ' test -e ', folderName,'_output.txt && echo 1 || echo 0'];
+    
   j = [];
   while isempty(j)
     [~,cmd_out] = system(command);
@@ -58,7 +53,6 @@ function startSimulation(model,folderName)
     pause(60);
   end
    
-
   chdir(path);
   
 endfunction

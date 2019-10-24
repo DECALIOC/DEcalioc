@@ -7,18 +7,15 @@ function simData = simDataFromHead(model, folderName)
   %
   % Tim Churchfield
   %
-  % Last edited: 23/10/2019
-  
+  % Last edited: 24/10/2019
   
   
   global path;
   
   % open data.head
   fd = fopen([path, 'optim/', model, '/', folderName, '/data.head'], 'r');
-%  fd = fopen('/data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100/data.head','r');
-%  fd = fopen('M:\fwdf\members\church70\GitHub\DEcalioc\DEcalioc\DEMmodels\Lift100\data.head','r');
+  str = fgets(fd);  
   
-  str = fgets(fd);   
   % Walltime
   while ~startsWith(str,'variable walltime')
       str = fgets(fd);
