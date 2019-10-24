@@ -41,6 +41,14 @@ function startSimulation(model,folderName)
   status = unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
     ' /opt/torque/bin/qsub job.sh']);
     
+%  status = unix(['cd /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100', ';',...
+%    ' /opt/torque/bin/qsub job.sh']);
+%    
+%    
+%      status = unix([' /opt/torque/bin/qsub job.sh']);
+    
+    
+    
 %    /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100$
   chdir(path);
   
