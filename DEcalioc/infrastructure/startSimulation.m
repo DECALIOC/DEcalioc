@@ -36,12 +36,12 @@ function startSimulation(model,folderName)
   % info: unix(...) waits until the simulation has finished
   chdir([path, 'optim/', model, '/', folderName, '/']);    
 %  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/runscript']);
-  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/job.sh']);
+%  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/job.sh']);
   
-  status= unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
+  status = unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
     ' /opt/torque/bin/qsub job.sh']);
     
-    /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100$
+%    /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100$
   chdir(path);
   
 endfunction
