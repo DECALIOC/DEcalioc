@@ -28,7 +28,7 @@ variable queue     string "default" # Hypnos queue ("default" "long")
 variable walltime  string "200:00:00" # Max sim runtime (default = 200:00:00) 
 variable simdim     equal 2   # Simulation dimensions, 2D (2) or 3D (3)
 variable periodicbb equal 0   # Only for 2D: sim 0/1 - non/periodic boundary box
-variable proc       equal 4   # Number of processing cores utilised
+variable proc       equal 1   # Number of processing cores utilised
 variable nodes      equal 1   # (NOT WORKING!) Number of processing nodes 
 variable autoproc   equal 1   # Auto set processor layout (yes = 1, no = 0)
 variable xproc      equal 0   # x-direction processor layout (0 for auto-assign)
