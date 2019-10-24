@@ -33,8 +33,8 @@ function writeJob(model, folderName)
   system(['cd ', path, 'optim/', model, '/', folderName, ';',...
     ' chmod 755 job.sh; sed -i ''s/\r//g'' job.sh']);
 
-  system(['cd /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100;',...
-    ' chmod 755 job.sh; sed -i ''s/\r//g'' job.sh']);
+%  system(['cd /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100;',...
+%    ' chmod 755 job.sh; sed -i ''s/\r//g'' job.sh']);
     
   % open job.sh
 %  fd = fopen([path, 'optim/', model, '/', folderName, '/job.sh'], 'r');
