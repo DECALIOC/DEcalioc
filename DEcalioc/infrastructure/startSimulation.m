@@ -36,20 +36,29 @@ function startSimulation(model,folderName)
   % info: unix(...) waits until the simulation has finished
   chdir([path, 'optim/', model, '/', folderName, '/']);    
 %  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/runscript']);
-%  status= unix(['sh ', path, 'optim/', model, '/', folderName, '/job.sh']);
-  
   status = unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
-    ' /opt/torque/bin/qsub job.sh'])
-    
+    ' /opt/torque/bin/qsub job.sh']);  
 %  status = unix(['cd /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100', ';',...
 %    ' /opt/torque/bin/qsub job.sh']);
-disp(status)    
-%    
-%      status = unix([' /opt/torque/bin/qsub job.sh']);
-    
-    
-    
-%    /data/home/church70/GitHub/DEcalioc/DEcalioc/DEMmodels/Lift100$
+
+
+  % Query output.txt file existence
+%  status = unix(['cd ', path, 'optim/', model, '/', folderName, ';',...
+%    ' test -e ', folderName,'_output.txt && echo 1 || echo 0']);
+  command = ['cd ', path, 'optim/', model, '/', folderName, ';',...
+    ' test -e ', folderName,'_output.txt && echo 1 || echo 0'];
+  j = [];
+  while isempty(j)
+    [~,cmd_out] = system(command);
+    if str2double(cmd_out) == 1
+      j = 1;
+      disp('Log file found...');
+      break
+    end
+    pause(60);
+  end
+   
+
   chdir(path);
   
 endfunction
